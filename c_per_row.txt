@@ -7,4 +7,4 @@ rows=5    cols=4
 1075	1190	1305	1420	
 
 Seconds taken 0
-Microseconds taken: 1907
+Microseconds taken: 2162
