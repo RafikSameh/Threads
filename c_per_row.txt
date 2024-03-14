@@ -1,8 +1,10 @@
 Method: thread per row
-rows=3    cols=4
--1	10	-15	-28	
--3	-10	15	-36	
-5	-2	-9	-20	
+rows=5    cols=4
+175	190	205	220	
+400	440	480	520	
+625	690	755	820	
+850	940	1030	1120	
+1075	1190	1305	1420	
 
 Seconds taken 0
-Microseconds taken: 1968
+Microseconds taken: 1907

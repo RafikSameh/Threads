@@ -17,7 +17,6 @@ typedef struct array
 }array_t;
 void parse_input(int *rowA,int *colA,int *rowB,int *colB,char *fileA,char *fileB)
 {
-    //char *file="test1/a.txt";
     FILE *fp=fopen(fileA,"r");
     char *buffer;
     int n=100;
@@ -28,7 +27,7 @@ void parse_input(int *rowA,int *colA,int *rowB,int *colB,char *fileA,char *fileB
     token=strtok(NULL,"col=");
     *colA=(int)strtol(token,&temp,10);
     fclose(fp);free(buffer);
-    //file ="test1/b.txt";
+
     fp=fopen(fileB,"r");
     getline(&buffer,&n,fp);
     token=strtok(buffer,"row=");
@@ -46,7 +45,6 @@ void arr_assign(int row,int col,int **arr,char *file)
     char *buffer=(char*)malloc(sizeof(char)*100);
     int n=100;
     fgets(buffer,100,fp);    
-    printf("line is %s\n",buffer);
     char *temp;
     for(int i=0;i<row ;i++)
     {
@@ -135,7 +133,7 @@ int main()
     struct timeval stop, start;
     int rowA,colA,rowB,colB;
     
-    parse_input(&rowA,&colA,&rowB,&colB,"test2/a.txt","test2/b.txt");
+    parse_input(&rowA,&colA,&rowB,&colB,"test3/a.txt","test3/b.txt");
     int **arrA = (int **)malloc(rowA * sizeof(int *));
     for (int i = 0; i < rowA; i++) {
         arrA[i] = (int *)malloc(colA * sizeof(int));
@@ -145,10 +143,8 @@ int main()
     for (int i = 0; i < rowB; i++) {
         arrB[i] = (int *)malloc(colB * sizeof(int));
     }
-    printf("rowA= %d colA=%d\n",rowA,colA);
-    printf("rowB= %d colB=%d\n",rowB,colB);
-    arr_assign(rowA,colA,arrA,"test2/a.txt");
-    arr_assign(rowB,colB,arrB,"test2/b.txt");
+    arr_assign(rowA,colA,arrA,"test3/a.txt");
+    arr_assign(rowB,colB,arrB,"test3/b.txt");
 
 
     gettimeofday(&start, NULL); //start checking time
@@ -184,6 +180,7 @@ int main()
         arr->row=i;
         arr->res=result;
         pthread_create(&thread[i],NULL,ThreadperRow,(void *)arr);
+        threadnum++;
     }
     
     for(int j=0;j<rowA;j++)
@@ -194,6 +191,7 @@ int main()
     printf("Time taken by thread per row\n");
     printf("Seconds taken %lu\n", stop.tv_sec - start.tv_sec);
     printf("Microseconds taken: %lu\n", stop.tv_usec - start.tv_usec);
+    printf("Number of threads created = %d\n",threadnum);
     
     writeperrow(result,rowA,colB,stop.tv_sec - start.tv_sec,stop.tv_usec - start.tv_usec);
     // Free dynamically allocated memory

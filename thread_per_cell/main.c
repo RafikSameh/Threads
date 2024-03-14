@@ -45,7 +45,6 @@ void arr_assign(int row,int col,int **arr,char *file)
     char *buffer=(char*)malloc(sizeof(char)*100);
     int n=100;
     fgets(buffer,100,fp);    
-    printf("line is %s\n",buffer);
     char *temp;
     for(int i=0;i<row ;i++)
     {
@@ -98,7 +97,7 @@ int main()
     struct timeval stop, start;
     int rowA,colA,rowB,colB;
     
-    parse_input(&rowA,&colA,&rowB,&colB,"test2/a.txt","test2/b.txt");
+    parse_input(&rowA,&colA,&rowB,&colB,"test3/a.txt","test3/b.txt");
     int **arrA = (int **)malloc(rowA * sizeof(int *));
     for (int i = 0; i < rowA; i++) {
         arrA[i] = (int *)malloc(colA * sizeof(int));
@@ -108,10 +107,8 @@ int main()
     for (int i = 0; i < rowB; i++) {
         arrB[i] = (int *)malloc(colB * sizeof(int));
     }
-    arr_assign(rowA,colA,arrA,"test2/a.txt");
-    arr_assign(rowB,colB,arrB,"test2/b.txt");
-    printf("rowA= %d colA=%d\n",rowA,colA);
-    printf("rowB= %d colB=%d\n",rowB,colB);
+    arr_assign(rowA,colA,arrA,"test3/a.txt");
+    arr_assign(rowB,colB,arrB,"test3/b.txt");
 
     printf("\nthread per cell\n\n");
 
@@ -146,6 +143,7 @@ int main()
             arr->B=arrB;
             arr->CA=colA;
             pthread_create(&thread[i][j],NULL,ThreadperCell,(void *)arr);
+            threadnum++;
         }   
     }
     
@@ -159,18 +157,11 @@ int main()
     gettimeofday(&stop, NULL); //end checking time
     printf("Seconds taken %lu\n", stop.tv_sec - start.tv_sec);
     printf("Microseconds taken: %lu\n", stop.tv_usec - start.tv_usec);
+    printf("Number of threads created = %d\n",threadnum);
 
     
     WriteperCell(result,rowA,colB,stop.tv_sec - start.tv_sec,stop.tv_usec - start.tv_usec);
-    for(int i=0;i<rowA;i++)
-    {
-        for(int k=0;k<colB;k++)
-        {
-            printf("%d\t",result[i][k]);
-            //printf("%d\t",arr->res[i][k]);
-        }
-        printf("\n");
-    }
+
     // Free dynamically allocated memory
     for(int i = 0; i < rowA; i++) {
         free(result[i]);
